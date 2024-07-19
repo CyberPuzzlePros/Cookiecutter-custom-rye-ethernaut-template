@@ -3,11 +3,15 @@
     "email": "king.arthur@camelot.bt",
     "github_username": "king-arthur",
     "project_name": "Holy Grail",
+    "dist_name": "{{cookiecutter.project_name.lower().replace(' ', '-')}}",
+    "package_name": "{{cookiecutter.dist_name.replace('-', '_')}}",
     "python_version": ["3.9", "3.10", "3.11", "3.12"],
     "__prompts__": {
         "full_name": "Provide your [bold plum2]full name[/]",
         "email": "Provide your [bold plum2]email[/]",
         "python_version": "Provide the [bold plum2]minimum Python version[/]",
         "project_name": "Provide the [bold plum2]human-readible project name[/]",
+        "dist_name": "Provide the [bold plum2]project slug[/] (only ASCII letters/digits, underscores, hyphens, and periods)",
+        "package_name": "Provide the [bold plum2]package name[/] (only ASCII letters/digits, and underscores)"
     }
 }

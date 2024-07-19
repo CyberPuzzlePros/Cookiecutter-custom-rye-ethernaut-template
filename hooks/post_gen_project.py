@@ -1,6 +1,18 @@
 #!/usr/bin/python3
 import subprocess
 
+def is_rye_installed():
+    """
+    Check if rye is installed
+    """
+    try:
+        subprocess.run(["rye", "--version"], check=True, capture_output=True, text=True)
+        return True
+    except subprocess.CalledProcessError:
+        return False
+    except FileNotFoundError:
+        return False
+
 def install_rye():
     """
     Install rye using curl
@@ -22,19 +34,26 @@ def install_rye():
     curl_process.wait()
 
     # Print the output and errors
-    # print(bash_process.stdout)
     if bash_process.stderr:
         print(bash_process.stderr)
 
+def setup_env():
+    """
+    Set up rye environment
+    """
+    try:
+        subprocess.run(["rye", "init"], check=True)
+        subprocess.run(["rye", "add", "eth-ape", "--pre"], check=True)
+        subprocess.run(["rye", "sync", "--pre"], check=True)
+        subprocess.run(["rye", "run", "ape", "plugins", "install", "."], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"An error occurred: {e}")
+        print("Make sure to manually set up a git repository which is necessary for `hatch-vcs`")
 
-try:
-    install_rye()
-    subprocess.call(["rye", "init"])
-    subprocess.call(["rye", "add", "eth-ape", "--pre"])
-    subprocess.call(["rye", "sync", "--pre"])
-    subprocess.call(["rye", "run", "ape", "plugins", "install", "."])
-except Exception as e:
-    print(f"An error occurred during initializing the git repo: {e}")
-    print(
-        "Makre sure to manually set up a git repository which is necessary for `hatch-vcs`"
-    )
+def main():
+    if not is_rye_installed():
+        install_rye()
+    setup_env()
+
+if __name__ == "__main__":
+    main()
