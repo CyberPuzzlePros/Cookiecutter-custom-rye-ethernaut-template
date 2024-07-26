@@ -45,6 +45,9 @@ def setup_env():
         subprocess.run(["rye", "init"], check=True)
         subprocess.run(["rye", "add", "eth-ape", "--pre"], check=True)
         subprocess.run(["rye", "sync", "--pre"], check=True)
+        subprocess.run(["rye", "run", "ape", "init"], check=True)
+        # Don't need the src folder for this projcet
+        subprocess.run(["rm", "-rf", "src/"], check=True)
         subprocess.run(["rye", "run", "ape", "plugins", "install", "."], check=True)
     except subprocess.CalledProcessError as e:
         print(f"An error occurred: {e}")
